@@ -1,0 +1,146 @@
+def adicionar_contato(contatos, nome_contato, telefone_contato, email, favorito):
+    contato = {"nome": nome_contato, "telefone": telefone_contato, "email": email, "favorito": favorito}
+    contatos.append(contato)
+    # lembrar de colocar a mensagem de texto se o email estiver vazio.
+    print("\nO contato foi adicionado a sua lista.\n")
+    return
+
+def listar_contatos(contatos):
+    if not contatos:
+        print ("\nNão tem nenhum contato agendado.\n")
+
+    else:
+        print("\n---LISTA DE CONTATOS---")
+        for i, contato in enumerate (contatos, 1):
+            status = 'FAV' if contato["favorito"] == True else ''
+            nome_c = contato["nome"]
+            print(f"{i}- {nome_c} [{status}]")
+    return
+
+def editar_contato(contatos, i_contatos, novo_nome, novo_telefone, novo_email): 
+    print("\nO que deseja alterar no contato ?\n1- nome\n2- numero\n3- email\n4- favoritar ou retirar favorito\n5- sair")
+    alterar = 0 
+
+    while alterar <= 4:
+        alterar = int(input("- "))
+
+        if alterar == 1:
+            novo_nome = str(input("\nDigite o novo nome do contato\n- "))
+            contatos[i_contatos - 1]["nome"] = novo_nome
+            print(f"contato {i_contatos} teve o nome alterado para {novo_nome}")
+        
+        elif alterar == 2:
+            novo_telefone = int(input("\nDigite o novo número do contato\n- "))
+            contatos[i_contatos - 1]['telefone'] = novo_telefone
+            print(f"\no contato {i_contatos} teve o número alterado para {novo_telefone}")
+        
+        elif alterar == 3:
+            novo_email = str(input("\nDigite o novo email do contato\n- "))
+            contatos[i_contatos - 1]["email"] = novo_email
+            print(f"\nO contato {i_contatos} teve o email atualizado para {novo_email}")
+        
+        elif alterar == 4:
+            favorito = contatos[i_contatos - 1]["favorito"]
+            novo_favorito = not favorito
+            contatos[i_contatos - 1]["favorito"] = novo_favorito
+
+            status_favorito = 'favoritado' if novo_favorito else 'desfavoritado'
+            print(f"\no contato {i_contatos} foi {status_favorito}.\n")
+            break
+    return
+
+def listar_favoritos(contatos):
+    for contador, contato in enumerate (contatos, 1):
+        if contato['favorito'] == True:
+            print(f"\n{contador}- {contato['nome']} ")
+    return
+
+def apagar_contato(i_apagar, contatos):
+    if i_apagar < 1 or i_apagar > len(contatos):
+        print("\nEsse contato não existe\n")
+        return
+    else:
+        del contatos[i_apagar - 1]
+        print("\nContato Apagado.\n")
+    
+    return
+
+def main():
+    contatos = []
+
+    while True:
+        print("=== AGENDA ===\n")
+
+
+        print("1- Adicionar contato.")
+        print("2- Listar contatos.")
+        print("3- Editar contato.")
+        print("4- Listar contatos favoritos..")
+        print("5- Apagar contato.")
+        print("6- Sair.")
+
+        esc = str(input("escolha uma opção acima.\n"))
+
+        if esc == '1':
+            nome_contato = str(input("\nDigite o nome do seu contato: \n"))
+            telefone_contato = str(input("Digite o número do seu contato: \n"))
+
+            email = ''
+            email_opcional = ''
+
+            while email_opcional not in ['n', 's']:
+                email_opcional = str(input("Deseja anotar o email do contato?\ns - sim.\nn - não.\n"))
+
+                if email_opcional == 's':
+                    email = str(input("Digite o e-mail do contato: "))
+                    break
+                elif email_opcional == 'n':
+                    break
+                else:
+                    print("Valor invalido.")
+            
+            print("Deseja definir o contato como favorito?\ns - sim\nn - não.\n")
+            favorito_opcional = ''
+            
+            while favorito_opcional not in ['n', 's']:
+                favorito_opcional = str(input("- "))
+
+                if favorito_opcional == 's':
+                    favorito = True
+                    break
+                elif favorito_opcional == 'n':
+                    favorito = False
+                    break
+                else:
+                    print("Valor invalido.\n")
+
+            adicionar_contato(contatos, nome_contato, telefone_contato, email, favorito)
+
+        elif esc == '2':
+            listar_contatos(contatos)
+
+        elif esc == '3':
+            listar_contatos(contatos)
+            i_contatos = int(input("\nDigite o contato que deseja atualizar.\nDigite 0 para sair.\n"))
+            novo_nome = ''
+            novo_telefone = 0
+            novo_email = ''
+            novo_favorito = False
+            status_favorito = ''
+            editar_contato(contatos, i_contatos, novo_nome, novo_telefone, novo_email, novo_favorito, favorito, status_favorito)
+        
+        elif esc == '4':
+            listar_favoritos(contatos)
+
+        elif esc == '5':
+            listar_contatos(contatos) 
+            i_apagar = int(input("\nDigite o contato que deseja apagar.\n- "))
+            apagar_contato(i_apagar, contatos)
+
+
+        elif esc == '6':
+            break
+
+    
+if __name__ == "__main__":
+    main()
